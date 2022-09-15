@@ -1,4 +1,12 @@
 
+import networkx as nx
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.figure import Figure
+import tkinter as Tk
+import matplotlib.pyplot as plt  
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
 from tkinter import *
 
 
@@ -18,7 +26,7 @@ TextInput.grid(column=0,row=0)
 
 emptylabel=Label(textInputFrame,highlightthickness=0,background="#ffdb97")
 emptylabel.grid(row=1,column=0)
-showGraphButton = Button(textInputFrame,text="Show Graph",padx=10,pady=10)
+showGraphButton = Button(textInputFrame,text="Show Graph",padx=10,pady=10,command=lambda :show_graph())
 showGraphButton.grid(column=0,row=3,rowspan=2)
 
 propertiesFrame=Frame(root,borderwidth=2,relief="solid")
@@ -73,9 +81,6 @@ tournmentButton.grid(row=11,column=1,)
 root.config(background="#ffdb97")
 
 root.title("Traveling and Shipment Routing Using Genetic Algorithm")
-
-
-
 def fun():
     x=radioButton1.get()
     y=radioButton2.get()
@@ -86,6 +91,30 @@ def fun():
     e=MutationInput.get()
     f=elitismInput.get()
     g=AGInput.get()
+    # graph = {}
+    # i = 1.0
+    # line = ''
+    # while i != 100:
+    #     try:
+    #         line = TextInput.get(i,i+1)
+    #     except Exception:
+    #         print(Exception)
+    #         i =100
+    #         break
+    #     finally:
+    #         if len(line) == 0:
+    #             break
+    #         tokens = line.split()
+    #         node = tokens[0]
+    #         graph[node] ={}
+    #         for j in range (1,len(tokens) - 1,2):
+    #             graph[node][tokens[j]] = int(tokens[ j + 1])
+    #         i +=1
+    #         print(i)
+    
+    
+        
+        
     print(x)
     print(y)
     print(a)
@@ -95,8 +124,69 @@ def fun():
     print(e)
     print(f)
     print(g)
+    # print(len(graph))
+    # print(graph)
+    # for i in graph:
+    #     for j in graph[i]:
+    #          nodeTuple= zip(i,j)
+    #          global NodeList
+    #          NodesList += (nodeTuple)
+    # print(NodesList)
+    # print(type(NodesList[0]))
+    
 b=Button(text="Show Result",highlightthickness=0,relief="solid",bg="#7676EE",command=lambda:fun())
 b.place(x=170,y=620)
+
+  #(2) pip install networkx
+
+def show_graph():
+    graph = {}
+    i = 1.0
+    line = ''
+    while i != 100:
+        line = TextInput.get(i,i+1)
+        if len(line) == 0:
+            break
+        tokens = line.split()
+        node = tokens[0]
+        graph[node] ={}
+        for j in range (1,len(tokens) - 1,2):
+            graph[node][tokens[j]] = int(tokens[ j + 1])
+        i +=1
+        print(i)
+    print(len(graph))
+    print(graph)
+    NodesList =[]
+
+    for i in graph:
+        for j in graph[i]:
+            nodeTuple= zip(i,j)
+            NodesList += (nodeTuple)
+    print(NodesList)
+    print(type(NodesList[0]))
+    
+    
+    
+    G = nx.DiGraph()
+    G.add_edges_from(NodesList)
+
+    print(G.nodes)
+
+    f = Figure(figsize=(2.5,2.5), dpi=100)
+    a = f.add_subplot(111)
+    black_edges = [edge for edge in G.edges() ]
+    pos = nx.spring_layout(G)
+
+    nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('jet'), 
+                            node_size = 300,ax=a)
+    nx.draw_networkx_labels(G, pos,ax=a)
+    nx.draw_networkx_edges(G, pos, edgelist=black_edges, arrows=True,ax=a)
+    canvas = FigureCanvasTkAgg(f, master=root)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
+    toolbar = NavigationToolbar2Tk( canvas, root )
+    toolbar.update()
+    canvas._tkcanvas.place(x=400,y=30)   
 root.mainloop()
 
 
