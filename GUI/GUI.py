@@ -1,108 +1,103 @@
 
 from tkinter import *
-from tkinter import filedialog
-import tkinter
 
 
 root=Tk()
-r1ch=IntVar()
-r2ch=IntVar()
-c1ch=IntVar()
-c2ch=IntVar()
-c3ch=IntVar()
+root.geometry("700x700")
+radioButton1=IntVar()
+radioButton2=IntVar()
+radioButton3=IntVar()
+radioButton4=IntVar()
 
 
-fram=Frame(root,width=100,height=3,borderwidth=2,bg="blue")
-fram.place(x=20,y=400)
-tex=Text(root,width=67,height=20)
-tex.place(x=20,y=75)
-r1=Radiobutton(fram, text="r1",variable=r1ch,value=1,width=70,height=1,command=lambda : print("You chose r1"))
-r2=Radiobutton(fram, text="r2",variable=r2ch, value=2,width=70,height=1,command=lambda : print("You chose r2"))
 
-l=Label(fram,text="choose")
-l.pack()
-r1.pack(padx=10)
-r2.pack(padx=10)
+textInputFrame=Frame(root,bg="#ffdb97")
+textInputFrame.place(x=20,y=50)
+TextInput=Text(textInputFrame,width=35,height=10)
+TextInput.grid(column=0,row=0)
 
-fram1=Frame(root,width=100,height=40,borderwidth=2,bg="blue")
-fram1.place(x=20,y=476)
-l=Label(fram1,text="inputs")
-l.pack()
-e1=Entry(fram1,width=89)
-e1.insert(0,"Input 1")
-e1.focus_set()
-e1.pack()
+emptylabel=Label(textInputFrame,highlightthickness=0,background="#ffdb97")
+emptylabel.grid(row=1,column=0)
+showGraphButton = Button(textInputFrame,text="Show Graph",padx=10,pady=10)
+showGraphButton.grid(column=0,row=3,rowspan=2)
+
+propertiesFrame=Frame(root,borderwidth=2,relief="solid")
+propertiesFrame.place(x=20,y=320)
+
+stopLabel=Label(propertiesFrame,text="Stopping Criteria",highlightthickness=0)
+saturationRadioButton=Radiobutton(propertiesFrame,text="Saturation",variable=radioButton1,value=1,command=lambda : print("You chose r1"),selectcolor="#7676EE")
+AGradioButton=Radiobutton(propertiesFrame,text="After Generation",variable=radioButton2, value=2,command=lambda : print("You chose r2"),selectcolor="#7676EE")
+AGInput=Entry(propertiesFrame,bg="#7676EE")
+AGInput.grid(row=3,column=1,padx=20)
+stopLabel.grid(row=0,rowspan=2,column=0,padx=20)
+saturationRadioButton.grid(row=0,column=1)
+AGradioButton.grid(row=1,column=1,)
+
+canvas=Canvas(propertiesFrame, width=400, height=2,background='#000000')
+canvas.grid(column=0,row=4,columnspan=2)
+canvas.create_line(20,200,2000,200, fill="black", width=5)
+
+popLabel=Label(propertiesFrame,text="Population",highlightthickness=0)
+popLabel.grid(row=5,column=0)
+populationInput=Entry(propertiesFrame,bg="#7676EE")
+populationInput.grid(row=5,column=1,pady=10,padx=20)
+
+crossLabel=Label(propertiesFrame,text="Crossover  ",highlightthickness=0)
+crossLabel.grid(row=6,column=0)
+crossoverInput=Entry(propertiesFrame,bg="#7676EE")
+crossoverInput.grid(row=6,column=1,pady=10,padx=20)
+
+MutationLabel=Label(propertiesFrame,text="Mutation   ",highlightthickness=0)
+MutationLabel.grid(row=7,column=0)
+MutationInput=Entry(propertiesFrame,bg="#7676EE")
+MutationInput.grid(row=7,column=1,pady=10,padx=20)
+
+elitismLabel=Label(propertiesFrame,text="Elitism        ")
+elitismLabel.grid(row=8,column=0)
+elitismInput=Entry(propertiesFrame,bg="#7676EE")
+elitismInput.grid(row=8,column=1,pady=10,padx=20)
+
+canvas=Canvas(propertiesFrame, width=400, height=2,background='#000000')
+canvas.grid(column=0,row=9,columnspan=2)
+canvas.create_line(20,200,2000,200, fill="black", width=5)
+
+selectionLabel=Label(propertiesFrame,text="Selection",highlightthickness=0)
+rankingRadioButton=Radiobutton(propertiesFrame,text="Ranking",variable=radioButton3,value=3,command=lambda : print("You chose r3"),selectcolor="#7676EE")
+tournmentButton=Radiobutton(propertiesFrame,text="Tournment",variable=radioButton4, value=4,command=lambda : print("You chose r4"),selectcolor="#7676EE")
+
+selectionLabel.grid(row=10,rowspan=2,column=0,padx=20)
+rankingRadioButton.grid(row=10,column=1)
+tournmentButton.grid(row=11,column=1,)
 
 
-e2=Entry(fram1,width=89)
-e2.insert(1,"input2")
-e2.focus_set()
-e2.pack()
-fram2=Frame(root,width=100,height=40,borderwidth=2,bg="blue")
-fram2.place(x=20,y=540)
-l=Label(fram2,text="check")
-l.pack()
-c1=Checkbutton(fram2,variable=c1ch,text="c1",width=73)
-c1.pack()                            
-c2=Checkbutton(fram2,variable=c2ch,text="c2",width=73)
-c2.pack()                            
-c3=Checkbutton(fram2,variable=c3ch,text="c3",width=73)
-c3.pack()
+root.config(background="#ffdb97")
 
-root.config(background="orange")
+root.title("Traveling and Shipment Routing Using Genetic Algorithm")
 
-root.title("GUI")
-#canvas=Canvas(bg="blue")
-#
-#canvas.create_rectangle(50,240,600,780)
-#canvas.create_rectangle(50,420,600,780,fill="blue",outline="blue")
-#canvas.create_rectangle(50,660,600,780,fill="blue",outline="blue")
-#
-#
-#canvas.grid(row=1,column=1)
 
 
 def fun():
-    x=r1ch.get()
-    y=r2ch.get()
-    a=c1ch.get()
-    b=c2ch.get()
-    c=c3ch.get()
-    d=e1.get()
-    
-    
+    x=radioButton1.get()
+    y=radioButton2.get()
+    a=radioButton3.get()
+    b=radioButton4.get()
+    c=populationInput.get()
+    d=crossoverInput.get()
+    e=MutationInput.get()
+    f=elitismInput.get()
+    g=AGInput.get()
     print(x)
     print(y)
     print(a)
     print(b)
     print(c)
     print(d)
-b=Button(text="show in terminal",command=lambda:fun())
-b.place(x=700,y=600)
+    print(e)
+    print(f)
+    print(g)
+b=Button(text="Show Result",highlightthickness=0,relief="solid",bg="#7676EE",command=lambda:fun())
+b.place(x=170,y=620)
 root.mainloop()
-#from tkinter import *
-#from tkinter import ttk
-
-##Create an instance of Tkinter frame
-
-
-##Set the geometry of Tkinter frame
-#root.geometry("750x250")
-
-#def display_text():
-#   global entry
-#   string= entry.get()
-#   print(string)
-
-
-
-##Create an Entry widget to accept User Input
-#entry= Entry(root, width= 40)
-#entry.focus_set()
-#entry.pack()
-
-##Create a Button to validate Entry Widget
-
 
 
 
