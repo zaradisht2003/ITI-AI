@@ -91,28 +91,7 @@ def fun():
     e=MutationInput.get()
     f=elitismInput.get()
     g=AGInput.get()
-    # graph = {}
-    # i = 1.0
-    # line = ''
-    # while i != 100:
-    #     try:
-    #         line = TextInput.get(i,i+1)
-    #     except Exception:
-    #         print(Exception)
-    #         i =100
-    #         break
-    #     finally:
-    #         if len(line) == 0:
-    #             break
-    #         tokens = line.split()
-    #         node = tokens[0]
-    #         graph[node] ={}
-    #         for j in range (1,len(tokens) - 1,2):
-    #             graph[node][tokens[j]] = int(tokens[ j + 1])
-    #         i +=1
-    #         print(i)
-    
-    
+
         
         
     print(x)
@@ -124,20 +103,10 @@ def fun():
     print(e)
     print(f)
     print(g)
-    # print(len(graph))
-    # print(graph)
-    # for i in graph:
-    #     for j in graph[i]:
-    #          nodeTuple= zip(i,j)
-    #          global NodeList
-    #          NodesList += (nodeTuple)
-    # print(NodesList)
-    # print(type(NodesList[0]))
     
 b=Button(text="Show Result",highlightthickness=0,relief="solid",bg="#7676EE",command=lambda:fun())
 b.place(x=170,y=620)
 
-  #(2) pip install networkx
 
 def show_graph():
     graph = {}
