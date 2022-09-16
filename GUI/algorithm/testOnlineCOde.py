@@ -119,12 +119,17 @@ def play(nb_generation, nb_point,nbpop,elitism,seed) :
         population = crossover(population,elitism)
         best_score = population[0].score
         best.append(best_score)
+        znzn=0
         if best_score<1000:
-            print ('Meilleur score : ' + str(population[0].score))
-            plt.title("Score en fonction de la génération")
-            plt.plot(best)
-            population[0].show_me()
-            break
+            znzn+=1
+            
+            
+            if znzn==2:
+                break
+    print ('Best Fit : ' + str(population[0].score))
+    plt.title("Best Fitness function")
+    plt.plot(best)
+    plt.show()
 play(nb_generation=40,nbpop=100,nb_point=10,elitism=20,seed=10)
 
 
