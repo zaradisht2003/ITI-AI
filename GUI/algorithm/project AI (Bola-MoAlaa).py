@@ -1,4 +1,5 @@
 
+from xml.dom.minicompat import NodeList
 import networkx as nx
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
@@ -34,7 +35,7 @@ propertiesFrame.place(x=20,y=320)
 
 stopLabel=Label(propertiesFrame,text="Stopping Criteria",highlightthickness=0)
 saturationRadioButton=Radiobutton(propertiesFrame,text="Saturation",variable=radioButton1,value=1,command=lambda : print("You chose r1"),selectcolor="#7676EE")
-AGradioButton=Radiobutton(propertiesFrame,text="After Generation",variable=radioButton2, value=2,command=lambda : print("You chose r2"),selectcolor="#7676EE")
+AGradioButton=Radiobutton(propertiesFrame,text="After Generation",variable=radioButton2, value=1,command=lambda : print("You chose r2"),selectcolor="#7676EE")
 AGInput=Entry(propertiesFrame,bg="#7676EE")
 AGInput.grid(row=3,column=1,padx=20)
 stopLabel.grid(row=0,rowspan=2,column=0,padx=20)
@@ -81,43 +82,73 @@ tournmentButton.grid(row=11,column=1,)
 root.config(background="#ffdb97")
 
 root.title("Traveling and Shipment Routing Using Genetic Algorithm")
-def fun():
-    global saturation
+def showResult():
+    global saturation,AG,ranking,Tournment,pop,crossOver,elitism,AGInput
     saturation=radioButton1.get()
     AG=radioButton2.get()
     ranking=radioButton3.get()
-    b=radioButton4.get()
-    c=populationInput.get()
-    d=crossoverInput.get()
-    e=MutationInput.get()
-    f=elitismInput.get()
-    g=AGInput.get()
+    Tournment=radioButton4.get()
+    pop=int(populationInput.get())
+    crossOver=int(crossoverInput.get())
+    mutation=int(MutationInput.get())
+    elitism=int(elitismInput.get())
+    AGInput=int(AGInput.get())
+    play(nb_generation=40,nbpop=pop,userList=userList,elitism=elitism,AfterGeneration = AGInput,saturation=saturation)
 
-        
-        
-    return saturation,AG,ranking
-    print(AG)
-    print(ranking)
-    print(b)
-    print(c)
-    print(d)
-    print(e)
-    print(f)
-    print(g)
+
+
+def show_graph():
+    graph = {}
+    i = 1.0
+    line = ''
     
-b=Button(text="Show Result",highlightthickness=0,relief="solid",bg="#7676EE",command=lambda:fun())
-b.place(x=170,y=620)
+    while i != 100:
+        line = TextInput.get(i,i+1)
+        if len(line) == 0:
+            break
+        tokens = line.split()
+        node = tokens[0]
+        graph[node] ={}
+        for j in range (1,len(tokens) - 1,2):
+            graph[node][tokens[j]] = int(tokens[ j + 1])
+        i +=1
+        print(i)
+    print(len(graph))
+    print(graph)
+    NodesList =[]
+    userList = []
+    for i in graph:
+        for j in graph[i]:
+            nodeTuple= zip(i,j)
+            
+            NodesList +=(nodeTuple)
+            userList +=[(nodeTuple),graph[i][j]]
+    print(NodesList)
 
+    
+    G = nx.DiGraph()
+    G.add_edges_from(NodesList)
 
+    print(G.nodes)
 
+    f = Figure(figsize=(2.5,2.5), dpi=100)
+    a = f.add_subplot(111)
+    black_edges = [edge for edge in G.edges() ]
+    pos = nx.spring_layout(G)
 
-
-
-
-
-
-
-
+    nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('jet'), 
+                            node_size = 300,ax=a)
+    nx.draw_networkx_labels(G, pos,ax=a)
+    nx.draw_networkx_edges(G, pos, edgelist=black_edges, arrows=True,ax=a)
+    canvas = FigureCanvasTkAgg(f, master=root)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
+    toolbar = NavigationToolbar2Tk( canvas, root )
+    toolbar.update()
+    canvas._tkcanvas.place(x=400,y=30)  
+    return userList
+     
+     
 
 from cmath import sqrt
 import numpy as np
@@ -256,85 +287,9 @@ userList =[[('S', 'A'),5], [('S', 'B'),2], [('S', 'C'),4],[ ('A', 'D'),9],[ ('A'
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def show_graph():
-    graph = {}
-    i = 1.0
-    line = ''
     
-    while i != 100:
-        line = TextInput.get(i,i+1)
-        if len(line) == 0:
-            break
-        tokens = line.split()
-        node = tokens[0]
-        graph[node] ={}
-        for j in range (1,len(tokens) - 1,2):
-            graph[node][tokens[j]] = int(tokens[ j + 1])
-        i +=1
-        print(i)
-    print(len(graph))
-    print(graph)
-    NodesList =[]
-
-    for i in graph:
-        for j in graph[i]:
-            nodeTuple= zip(i,j)
-            NodesList += (nodeTuple)
-    print(NodesList)
-    print(type(NodesList[0]))
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    G = nx.DiGraph()
-    G.add_edges_from(NodesList)
-
-    print(G.nodes)
-
-    f = Figure(figsize=(2.5,2.5), dpi=100)
-    a = f.add_subplot(111)
-    black_edges = [edge for edge in G.edges() ]
-    pos = nx.spring_layout(G)
-
-    nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('jet'), 
-                            node_size = 300,ax=a)
-    nx.draw_networkx_labels(G, pos,ax=a)
-    nx.draw_networkx_edges(G, pos, edgelist=black_edges, arrows=True,ax=a)
-    canvas = FigureCanvasTkAgg(f, master=root)
-    canvas.draw()
-    canvas.get_tk_widget().pack()
-    toolbar = NavigationToolbar2Tk( canvas, root )
-    toolbar.update()
-    canvas._tkcanvas.place(x=400,y=30)  
-    fun()
-     
-    play(nb_generation=40,nbpop=100,userList=userList,elitism=20,AfterGeneration = 40,saturation=saturation)
-    
+b=Button(text="Show Result",highlightthickness=0,relief="solid",bg="#7676EE",command=lambda:showResult())
+b.place(x=170,y=620) 
 root.mainloop()
 
 
